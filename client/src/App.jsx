@@ -5,6 +5,7 @@ import PublicLayout from './components/layout/PublicLayout';
 import B2BLayout from './components/layout/B2BLayout';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
+import Products from './pages/Products'; // Import Products page
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,15 +15,16 @@ import { AuthProvider } from './context/AuthContext';
 
 function AppContent() {
     const location = useLocation();
-    // If route starts with /b2b or /admin, use B2B Layout
-    // EXCEPT /b2b/login or register if they existed (but we use common login)
     const isB2B = location.pathname.startsWith('/b2b') || location.pathname.startsWith('/admin');
 
     return (
         <Routes>
             {/* Public Routes with Public Layout */}
             <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/shop" element={<PublicLayout><Shop /></PublicLayout>} />
+            {/* Use Products page for /shop and /products */}
+            <Route path="/shop" element={<PublicLayout><Products /></PublicLayout>} />
+            <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
+
             <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />

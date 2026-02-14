@@ -1,0 +1,44 @@
+import BaseScraper from './baseScraper.js';
+
+export default class SifiAllProductsScraper extends BaseScraper {
+    constructor() {
+        super('Sifi Prakash', 'https://onlineprakash.com/our-products/');
+    }
+
+    async processCatalog(url) {
+        const $ = await this.getPageContent(url);
+        const links = [];
+
+        // Sometimes "our-products" is a page with categories, or a shop page. 
+        // Assuming WooCommerce shop loop
+        $('.product .woocommerce-loop-product__link').each((i, el) => {
+            links.push($(el).attr('href'));
+        });
+
+        console.log(`[Sifi All] Found ${links.length} products.`);
+
+        for (const link of links) {
+            await this.processProduct(link);
+        }
+    }
+
+    async extractProductData($, url) {
+        const name = $('h1.product_title').text().trim();
+        const description = $('.woocommerce-product-details__short-description').text().trim();
+        const priceText = $('.price').first().text();
+        const price = parseFloat(priceText.replace(/[^\d.]/g, ''));
+        const imageUrl = $('.woocommerce-product-gallery__image img').attr('src');
+
+        // Try to extract specific category
+        const category = $('.posted_in a').first().text() || 'Namkeen';
+
+        return {
+            name,
+            description,
+            retail_price: price,
+            imageUrl,
+            category,
+            brand: 'Sifi Prakash'
+        };
+    }
+}

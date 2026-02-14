@@ -1,10 +1,10 @@
-import { Sequelize, DataTypes } from 'sequelize';
+import sequelize from '../utils/db.js';
+import { DataTypes } from 'sequelize';
+import Product from './productModel.js';
+import ImportLog from './importLogModel.js';
+import SyncLog from './syncLogModel.js';
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    logging: false,
-});
-
+// User Model
 const User = sequelize.define('User', {
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, unique: true, allowNull: false },
@@ -15,23 +15,14 @@ const User = sequelize.define('User', {
     approved: { type: DataTypes.BOOLEAN, defaultValue: false } // For B2B
 });
 
-const Product = sequelize.define('Product', {
-    name: { type: DataTypes.STRING, allowNull: false },
-    description: { type: DataTypes.TEXT },
-    category: { type: DataTypes.STRING },
-    priceRetail: { type: DataTypes.FLOAT, allowNull: false },
-    priceBulk: { type: DataTypes.FLOAT },
-    moq: { type: DataTypes.INTEGER, defaultValue: 1 },
-    stock: { type: DataTypes.INTEGER, defaultValue: 0 },
-    imageUrl: { type: DataTypes.STRING }
-});
-
+// Order Model
 const Order = sequelize.define('Order', {
     total: { type: DataTypes.FLOAT, allowNull: false },
     status: { type: DataTypes.ENUM('pending', 'shipped', 'completed', 'cancelled'), defaultValue: 'pending' },
     type: { type: DataTypes.ENUM('retail', 'bulk'), defaultValue: 'retail' }
 });
 
+// OrderItem Model
 const OrderItem = sequelize.define('OrderItem', {
     quantity: { type: DataTypes.INTEGER, allowNull: false },
     price: { type: DataTypes.FLOAT, allowNull: false }
@@ -47,4 +38,4 @@ OrderItem.belongsTo(Order);
 Product.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 
-export { sequelize, User, Product, Order, OrderItem };
+export { sequelize, User, Product, Order, OrderItem, ImportLog, SyncLog };
