@@ -1,34 +1,48 @@
 import sequelize from '../utils/db.js';
 import { DataTypes } from 'sequelize';
+import Brand from './brandModel.js';
+import Category from './categoryModel.js';
 import Product from './productModel.js';
-import ImportLog from './importLogModel.js';
+import Invoice from './invoiceModel.js';
 import SyncLog from './syncLogModel.js';
 
 // User Model
 const User = sequelize.define('User', {
+    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, unique: true, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
     role: { type: DataTypes.ENUM('admin', 'b2b', 'b2c'), defaultValue: 'b2c' },
-    companyName: { type: DataTypes.STRING }, // For B2B
-    gst: { type: DataTypes.STRING }, // For B2B
-    approved: { type: DataTypes.BOOLEAN, defaultValue: false } // For B2B
-});
+    companyName: { type: DataTypes.STRING },
+    gst: { type: DataTypes.STRING },
+    approved: { type: DataTypes.BOOLEAN, defaultValue: false }
+}, { tableName: 'users' });
 
 // Order Model
 const Order = sequelize.define('Order', {
-    total: { type: DataTypes.FLOAT, allowNull: false },
+    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+    total_amount: { type: DataTypes.FLOAT, allowNull: false },
     status: { type: DataTypes.ENUM('pending', 'shipped', 'completed', 'cancelled'), defaultValue: 'pending' },
-    type: { type: DataTypes.ENUM('retail', 'bulk'), defaultValue: 'retail' }
-});
+    order_type: { type: DataTypes.ENUM('b2c', 'b2b'), defaultValue: 'b2c' }
+}, { tableName: 'orders' });
 
 // OrderItem Model
 const OrderItem = sequelize.define('OrderItem', {
+    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     quantity: { type: DataTypes.INTEGER, allowNull: false },
     price: { type: DataTypes.FLOAT, allowNull: false }
-});
+}, { tableName: 'order_items' });
 
 // Relationships
+Brand.hasMany(Category);
+Category.belongsTo(Brand);
+
+Brand.hasMany(Product);
+Product.belongsTo(Brand);
+
+Category.hasMany(Product);
+Product.belongsTo(Category);
+
 User.hasMany(Order);
 Order.belongsTo(User);
 
@@ -38,4 +52,7 @@ OrderItem.belongsTo(Order);
 Product.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 
-export { sequelize, User, Product, Order, OrderItem, ImportLog, SyncLog };
+Order.hasOne(Invoice);
+Invoice.belongsTo(Order);
+
+export { sequelize, User, Brand, Category, Product, Order, OrderItem, Invoice, SyncLog };

@@ -5,17 +5,17 @@ import SriSriHoneyScraper from './productScraper/srisriHoneyScraper.js';
 import SifiClapScraper from './productScraper/sifiClapScraper.js';
 import SifiAllProductsScraper from './productScraper/sifiAllProductsScraper.js';
 import KeyaScraper from './productScraper/keyaScraper.js';
-import HimGoldScraper from './productScraper/himgoldScraper.js';
+import HimGoldScraper from './productScraper/himGoldScraper.js';
 
 const scrapers = {
     patanjali: new PatanjaliScraper(),
-    srisri_ghee: new SriSriGheeScraper(),
-    srisri_salt: new SriSriSaltHoneyScraper(),
-    srisri_honey: new SriSriHoneyScraper(),
-    sifi_clap: new SifiClapScraper(),
-    sifi_all: new SifiAllProductsScraper(),
+    srisriGhee: new SriSriGheeScraper(),
+    srisriSaltHoney: new SriSriSaltHoneyScraper(),
+    srisriHoney: new SriSriHoneyScraper(),
+    sifiClap: new SifiClapScraper(),
+    sifiAllProducts: new SifiAllProductsScraper(),
     keya: new KeyaScraper(),
-    himgold: new HimGoldScraper(),
+    himGold: new HimGoldScraper(),
 };
 
 export const runScraper = async (key) => {

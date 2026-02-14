@@ -13,7 +13,7 @@ router.post('/scrape/:key', async (req, res) => {
 
         res.json({ message: `Scraping started for ${key}. Check logs for progress.` });
     } catch (error) {
-        res.status(400).json({ error: error.message, available_keys: ['patanjali', 'srisri_ghee', 'srisri_salt', 'srisri_honey', 'sifi_clap', 'sifi_all', 'keya', 'himgold'] });
+        res.status(400).json({ error: error.message, available_keys: Object.keys(scrapers) });
     }
 });
 

@@ -1,40 +1,18 @@
 import BaseScraper from './baseScraper.js';
-
 export default class SifiClapScraper extends BaseScraper {
-    constructor() {
-        super('Sifi Prakash', 'https://onlineprakash.com/product-category/clap/');
-    }
-
+    constructor() { super('Sifi Prakash', 'https://onlineprakash.com/product-category/clap/', 'Clap'); }
     async processCatalog(url) {
-        // WooCommerce
         const $ = await this.getPageContent(url);
         const links = [];
-
-        $('.product .woocommerce-loop-product__link').each((i, el) => {
-            links.push($(el).attr('href'));
-        });
-
-        console.log(`[Sifi Clap] Found ${links.length} products.`);
-
-        for (const link of links) {
-            await this.processProduct(link);
-        }
+        $('.product .woocommerce-loop-product__link').each((i, el) => links.push($(el).attr('href')));
+        for (const link of links) await this.processProduct(link);
     }
-
     async extractProductData($, url) {
-        const name = $('h1.product_title').text().trim();
-        const description = $('.woocommerce-product-details__short-description').text().trim();
-        const priceText = $('.price').first().text();
-        const price = parseFloat(priceText.replace(/[^\d.]/g, ''));
-        const imageUrl = $('.woocommerce-product-gallery__image img').attr('src');
-
         return {
-            name,
-            description,
-            retail_price: price,
-            imageUrl,
-            category: 'Clap',
-            brand: 'Sifi Prakash'
+            name: $('h1.product_title').text().trim(),
+            description: $('.woocommerce-product-details__short-description').text().trim(),
+            retail_price: parseFloat($('.price').first().text().replace(/[^\d.]/g, '')) || null,
+            imageUrl: $('.woocommerce-product-gallery__image img').attr('src')
         };
     }
 }
