@@ -7,6 +7,7 @@ import { sequelize } from './models/index.js';
 import ecommerceRoutes from './routes/ecommerce.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import adminSyncRoutes from './routes/adminSync.routes.js';
+import inquiryRoutes from './routes/inquiry.routes.js';
 import './cron/syncCron.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 app.use('/api', ecommerceRoutes);
 app.use('/api', orderRoutes);
 app.use('/api/admin', adminSyncRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 
 const PORT = process.env.PORT || 5000;
 

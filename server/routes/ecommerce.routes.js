@@ -35,6 +35,16 @@ router.get('/categories/:slug/products', async (req, res) => {
     res.json(products);
 });
 
+// GET all products
+router.get('/products', async (req, res) => {
+    try {
+        const products = await Product.findAll({ include: [Brand, Category] });
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // GET single product by slug
 router.get('/products/:slug', async (req, res) => {
     const product = await Product.findOne({

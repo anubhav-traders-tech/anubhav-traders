@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PublicLayout from './components/layout/PublicLayout';
 import B2BLayout from './components/layout/B2BLayout';
 
@@ -14,23 +14,21 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 // B2B Pages
-import B2BDashboard from './pages/B2BDashboard';
+import B2BOverview from './pages/B2BOverview';
 import B2BProducts from './pages/B2BProducts';
 import B2BOrders from './pages/B2BOrders';
+import Shop from './pages/Shop';
+import Contact from './pages/Contact';
 
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-const PrivateRoute = ({ children }) => {
-    const { user } = useAuth();
-    // return user ? children : <Navigate to="/login" />;
-    return children; // For dev ease, normally enforce
-};
+import { AuthProvider } from './context/AuthContext';
 
 function AppContent() {
     return (
         <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+            <Route path="/shop" element={<PublicLayout><Shop /></PublicLayout>} />
+            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
             <Route path="/brands" element={<PublicLayout><Brands /></PublicLayout>} />
             <Route path="/brand/:slug" element={<PublicLayout><BrandPage /></PublicLayout>} />
             <Route path="/product/:slug" element={<PublicLayout><ProductPage /></PublicLayout>} />
@@ -39,9 +37,10 @@ function AppContent() {
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
             <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
 
-            {/* B2B Dashboard Subroutes */}
-            <Route path="/b2b" element={<PrivateRoute><B2BLayout><B2BDashboard /></B2BLayout></PrivateRoute>}>
-                <Route index element={<div className="p-10 text-white">Welcome to B2B Console</div>} />
+            {/* B2B Dashboard */}
+            <Route path="/b2b" element={<B2BLayout />}>
+                <Route index element={<Navigate to="/b2b/overview" replace />} />
+                <Route path="overview" element={<B2BOverview />} />
                 <Route path="products" element={<B2BProducts />} />
                 <Route path="orders" element={<B2BOrders />} />
             </Route>

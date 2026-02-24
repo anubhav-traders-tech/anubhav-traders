@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useCartStore from '../store/cartStore';
+import useCartStore from '../../store/cartStore';
 import { ShoppingBag, X, Plus, Minus, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 

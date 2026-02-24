@@ -33,6 +33,9 @@ const OrderItem = sequelize.define('OrderItem', {
     price: { type: DataTypes.FLOAT, allowNull: false }
 }, { tableName: 'order_items' });
 
+import Inquiry from './inquiryModel.js';
+import ImportLog from './importLogModel.js';
+
 // Relationships
 Brand.hasMany(Category);
 Category.belongsTo(Brand);
@@ -55,4 +58,4 @@ OrderItem.belongsTo(Product);
 Order.hasOne(Invoice);
 Invoice.belongsTo(Order);
 
-export { sequelize, User, Brand, Category, Product, Order, OrderItem, Invoice, SyncLog };
+export { sequelize, User, Brand, Category, Product, Order, OrderItem, Invoice, SyncLog, Inquiry, ImportLog };
