@@ -6,8 +6,10 @@ import SifiClapScraper from './productScraper/sifiClapScraper.js';
 import SifiAllProductsScraper from './productScraper/sifiAllProductsScraper.js';
 import KeyaScraper from './productScraper/keyaScraper.js';
 import HimGoldScraper from './productScraper/himGoldScraper.js';
+import BasicAyurvedaScraper from './productScraper/basicAyurvedaScraper.js';
+import VavedaScraper from './productScraper/vavedaScraper.js';
 
-const scrapers = {
+export const scrapers = {
     patanjali: new PatanjaliScraper(),
     srisriGhee: new SriSriGheeScraper(),
     srisriSaltHoney: new SriSriSaltHoneyScraper(),
@@ -16,6 +18,8 @@ const scrapers = {
     sifiAllProducts: new SifiAllProductsScraper(),
     keya: new KeyaScraper(),
     himGold: new HimGoldScraper(),
+    basicAyurveda: new BasicAyurvedaScraper(),
+    vevida: new VavedaScraper(),
 };
 
 export const runScraper = async (key) => {

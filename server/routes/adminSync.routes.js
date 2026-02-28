@@ -1,5 +1,5 @@
 import express from 'express';
-import { runScraper, runAllScrapers } from '../services/scraperManager.js';
+import { runScraper, runAllScrapers, scrapers } from '../services/scraperManager.js';
 import SyncLog from '../models/syncLogModel.js';
 
 const router = express.Router();
